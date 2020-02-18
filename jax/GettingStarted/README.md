@@ -16,3 +16,19 @@ According to the operation, the two differentiations might require a different n
 obtain the Jacobian. Using a hybrid scheme of forward and reverse differentiation therefore results in an optimization
 of the number of operations needed to compute the Jacobian. 
 
+## Using XLA to compile code
+
+JAX leverages [XLA](https://www.tensorflow.org/xla) in order to compile the code to run on accelerators rather than on
+CPU. XLA uses JIT compilation by default for NumPy operations, and lets the user use JIT to compile user-made Python
+functions into XLA-optimized kernels.
+
+## Grad and VMap
+
+JAX isn't simply a NumPy on GPU. In addition to the aforementioned JIT compilation, it also comes with two additional
+programs:
+
+- grad, which computes derivatives of arbitrary functions (accepts many Python statements such as if-else, loops, ...)
+- vmap, which is a vectorizing map. Works similarly to a mapping function along an array's axis, but instead of
+  keeping the loop on the outside of the operation (e.g. multiplying a matrix with an array of vectors), it pushes
+  the loop down into a function's primitive operations for better performance (prioritizing a matrix by matrix
+  operation rather than a loop of matrix by vector operations, for example).
